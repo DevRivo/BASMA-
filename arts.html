@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>بصمة Basma | رؤيتك فن، وبصمتك تميّزك.</title>
+  <meta name="description" content="بصمة مجتمع فني لعرض الرسومات واكتشاف الفنانين والتعبير عن هويتك الفنية.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+
+      <a class="brand" href="#home" aria-label="بصمة - الرئيسية">
+        <img class="brand__logo" src="images/logo.png" alt="" width="48" height="48">
+        <span class="brand__text">
+          <span class="brand__name">بصمة</span>
+          <span class="brand__tagline">رؤيتك فن، وبصمتك تميّزك.</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#home" aria-current="page">الرئيسية</a></li>
+          <li><a class="nav__link" href="drawings.html">رسومات</a></li>
+          <li><a class="nav__link" href="#artists">فنانين</a></li>
+          <li><a class="nav__link" href="#communities">مجتمعات</a></li>
+          <li><a class="nav__link" href="#challenges">تحديات وألعاب</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar__actions">
+        <a class="btn btn--outline" href="#login">تسجيل الدخول</a>
+        <a class="btn btn--primary" href="#signup">إنشاء حساب</a>
+      </div>
+
+    </div>
+  </header>
+
+  <main id="home">
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__inner">
+
+        <figure class="hero__media">
+          <img src="images/hero.png" alt="لوحة طبيعية مرسومة بالألوان الزيتية على حامل داخل مرسم دافئ" width="1672" height="941">
+        </figure>
+
+        <div class="hero__content">
+          <h1 id="hero-title">أهلاً بيك في بصمة، بيتك وسط الفنانين</h1>
+          <p>
+            مجتمع فني بنجمع فيه الرسامين والمبدعين في مكان واحد. شارك رسوماتك،
+            واكتشف أعمال فنانين غيرك، وعبّر عن هويتك الفنية بأسلوبك الخاص.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary btn--lg" href="drawings.html">اكتشف رسومات</a>
+            <a class="btn btn--outline btn--lg" href="#artists">تعرف على فنانين</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="faq" aria-labelledby="faq-title">
+      <div class="faq__inner">
+        <h2 id="faq-title">عن الموقع</h2>
+
+        <div class="accordion">
+
+          <details class="accordion__item" name="faq">
+            <summary class="accordion__question">
+              <span>إيه اللي الموقع ده بيعمله؟</span>
+              <span class="accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion__answer">
+              <p>
+                بصمة مجتمع إلكتروني متكامل للرسامين والفنانين، يوفّر مساحة يستطيع فيها المبدعون
+                نشر أعمالهم الفنية وعرضها، واكتشاف فنانين آخرين، والتفاعل مع المجتمع الفني،
+                وتبادل الإلهام والأفكار. كما يتيح المشاركة في المجتمعات الفنية، والانخراط في
+                تحديات وألعاب إبداعية تنمّي المهارات وتجمع الفنانين.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion__item" name="faq">
+            <summary class="accordion__question">
+              <span>إيه التحديات أو العيوب اللي ممكن أقابلها؟</span>
+              <span class="accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion__answer">
+              <p>
+                كأي مجتمع إلكتروني، قد تواجه بصمة بعض التحديات، مثل الحاجة إلى مشاركة نشطة من
+                المستخدمين، والحفاظ على بيئة يسودها الاحترام والدعم، وضمان جودة المحتوى بشكل
+                مستمر، وتطوير المنصة باستمرار بناءً على آراء المستخدمين. وهذه تحديات تطويرية
+                تسعى المنصة إلى معالجتها عبر التحسين المستمر وتعاون أفراد المجتمع.
+              </p>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer__copy">© جميع الحقوق محفوظة لـ بصمة Basma</p>
+    <p class="footer__dev" dir="ltr">Developed by DevRivo</p>
+  </footer>
+
+</body>
+</html>
