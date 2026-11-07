@@ -1,0 +1,3 @@
+.n{display:flex;gap:.9rem;background:var(--card);border-radius:var(--r);padding:1rem;margin-bottom:.8rem;border-inline-start:6px solid var(--btn);align-items:flex-start}
+.n .round{width:56px;height:56px}.n.info{border-inline-start-color:#c9b49f}.n.result{border-inline-start-color:#6d8b6a}.n.ann .round{object-fit:contain;mix-blend-mode:multiply;background:none}
+.n p{margin-bottom:.1rem}.n small{color:var(--mut)}.n .row{margin-top:.5rem}.n .fb{font-weight:700;margin-top:.4rem}
