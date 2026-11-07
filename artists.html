@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
+  <title>فنانين – بصمة BASMA</title>
+  <meta name="description" content="تعرّف على فنانين جدد وتواصل مع أصدقائك داخل مجتمع بصمة.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/gallery.css">
+  <link rel="stylesheet" href="css/artists.css">
+  <script src="js/artists.js" defer></script>
+</head>
+<body>
+
+  <!-- 1. NAVBAR -->
+  <header class="navbar" id="page-header">
+    <div class="navbar__inner container">
+      <a class="brand" href="index.html" aria-label="بصمة – الصفحة الرئيسية">
+        <img class="brand__logo" src="assets/logo.svg" width="52" height="52" alt="شعار بصمة: عين فنية بقزحية على شكل بصمة">
+        <span class="brand__text">
+          <span class="brand__name">بصمة</span>
+          <span class="brand__slogan">رؤيتك فن، وبصمتك تميّزك.</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="index.html">الرئيسية</a></li>
+          <li><a class="nav__link" href="gallery.html" data-protected>رسومات</a></li>
+          <li><a class="nav__link is-active" href="artists.html" aria-current="page">فنانين</a></li>
+          <li><a class="nav__link" href="communities.html" data-protected>مجتمعات</a></li>
+        </ul>
+      </nav>
+      <div class="actions">
+        <a class="bell" href="notifications.html" data-protected aria-label="الإشعارات"><span aria-hidden="true">🔔</span></a>
+        <a class="btn btn--sm" href="login.html">تسجيل الدخول</a>
+        <a class="btn btn--sm" href="register.html">إنشاء حساب</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="page-main">
+    <!-- 2. HERO -->
+    <section class="hero hero--gallery container" aria-labelledby="hero-title">
+      <div class="hero__media">
+        <img src="assets/artists-hero.jpg" width="1200" height="600" alt="فنانة ترسم لوحة على حامل داخل مرسم دافئ مليء بالرسومات وأدوات الرسم">
+      </div>
+      <div class="hero__content">
+        <h1 id="hero-title">ورا كل إبداع فنان يستحق إنك تتعرف عليه.</h1>
+        <p>اكتشف فنانين من عوالم وأساليب مختلفة، اتعرف على أصحاب الشغف بالفن، وابدأ علاقات إبداعية جديدة داخل مجتمع بصمة.</p>
+        <div class="hero__buttons">
+          <a class="btn" href="#discover">اكتشف فنانين</a>
+          <a class="btn" href="communities.html" data-protected>عرض المجتمعات</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SEARCH -->
+    <section class="artist-search container" aria-label="البحث عن فنان">
+      <div class="search__field">
+        <svg class="search__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input class="control search__input" type="search" id="artist-search" placeholder="ابحث عن اسم فنان..." aria-label="ابحث عن اسم فنان" autocomplete="off">
+      </div>
+    </section>
+
+    <!-- 4. FRIENDS AND FOLLOWERS -->
+    <section class="artists-section container" id="friends-section" aria-labelledby="friends-title">
+      <h2 class="section-title" id="friends-title">متابعيك وأصدقاؤك</h2>
+      <div class="artist-grid" id="friends-grid"></div>
+    </section>
+
+    <!-- 5. DISCOVER NEW ARTISTS -->
+    <section class="artists-section container" id="discover" aria-labelledby="discover-title">
+      <h2 class="section-title" id="discover-title">تعرف على فنانين جدد</h2>
+      <div class="artist-grid" id="discover-grid"></div>
+    </section>
+
+    <!-- No results (search) -->
+    <div class="empty container" id="no-results" role="status" aria-live="polite" hidden>
+      <svg viewBox="0 0 64 64" width="72" height="72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="22" r="10"/><path d="M12 54c2-12 10-18 20-18"/><circle cx="44" cy="44" r="9" fill="var(--bg)"/><path d="M51 51l7 7"/></svg>
+      <p>لا توجد نتيجة للبحث</p>
+    </div>
+  </main>
+
+  <!-- 6. ARTIST PROFILE MODAL (overlay) -->
+  <div class="modal" id="profile-modal" hidden>
+    <div class="modal__dialog profile" role="dialog" aria-modal="true" aria-labelledby="profile-name" tabindex="-1">
+      <div class="profile__bar"><button class="modal__close" type="button" id="profile-close" aria-label="إغلاق ملف الفنان"><span aria-hidden="true">×</span></button></div>
+      <div class="profile__cover"><img id="profile-cover" src="" alt="" width="1200" height="400"></div>
+      <div class="profile__head">
+        <img class="profile__avatar" id="profile-avatar" src="" alt="" width="104" height="104">
+        <h2 class="profile__name" id="profile-name"></h2>
+        <button class="btn" type="button" id="profile-action"></button>
+      </div>
+      <dl class="stats">
+        <div class="stat"><dt>عدد الأصدقاء</dt><dd id="stat-friends"></dd></div>
+        <div class="stat"><dt>عدد المتابعين</dt><dd id="stat-followers"></dd></div>
+        <div class="stat"><dt>عدد الرسومات</dt><dd id="stat-works"></dd></div>
+        <div class="stat"><dt>عدد المجتمعات المنضم إليها</dt><dd id="stat-communities"></dd></div>
+      </dl>
+      <section class="profile__gallery" aria-labelledby="profile-gallery-title">
+        <h3 id="profile-gallery-title">رسوماته</h3>
+        <div class="profile__grid" id="profile-grid"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 7. TEXT-ONLY CHAT (overlay) -->
+  <div class="modal" id="chat-modal" hidden>
+    <div class="modal__dialog chat" role="dialog" aria-modal="true" aria-labelledby="chat-name" tabindex="-1">
+      <header class="chat__head">
+        <img class="chat__avatar" id="chat-avatar" src="" alt="" width="44" height="44">
+        <div>
+          <h2 class="chat__name" id="chat-name"></h2>
+          <p class="chat__status">نشط الآن</p>
+        </div>
+        <button class="modal__close" type="button" id="chat-close" aria-label="إغلاق المحادثة"><span aria-hidden="true">×</span></button>
+      </header>
+      <div class="chat__messages" id="chat-messages" role="log" aria-live="polite" aria-label="الرسائل"></div>
+      <form class="chat__composer" id="chat-form" autocomplete="off">
+        <input class="control chat__input" type="text" id="chat-input" placeholder="اكتب رسالتك..." aria-label="اكتب رسالتك" maxlength="500">
+        <button class="chat__send" type="submit" aria-label="إرسال"><span aria-hidden="true">✈️</span></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. FOOTER -->
+  <footer class="footer" id="page-footer">
+    <p>© جميع الحقوق محفوظة لـ بصمة Basma</p>
+    <p class="footer__credit" lang="en" dir="ltr">Developed by DevRivo</p>
+  </footer>
+
+</body>
+</html>
