@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>رسومات – بصمة BASMA</title>
+  <meta name="description" content="معرض بصمة: اكتشف أعمال الفنانين وشارك رسمتك.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/gallery.css">
+  <script src="js/gallery.js" defer></script>
+</head>
+<body>
+
+  <!-- 1. NAVBAR -->
+  <header class="navbar" id="page-header">
+    <div class="navbar__inner container">
+      <a class="brand" href="index.html" aria-label="بصمة – الصفحة الرئيسية">
+        <img class="brand__logo" src="assets/logo.svg" width="52" height="52" alt="شعار بصمة: عين فنية بقزحية على شكل بصمة">
+        <span class="brand__text">
+          <span class="brand__name">بصمة</span>
+          <span class="brand__slogan">رؤيتك فن، وبصمتك تميّزك.</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="التنقل الرئيسي">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="index.html">الرئيسية</a></li>
+          <li><a class="nav__link is-active" href="gallery.html" aria-current="page">رسومات</a></li>
+          <li><a class="nav__link" href="artists.html" data-protected>فنانين</a></li>
+          <li><a class="nav__link" href="communities.html" data-protected>مجتمعات</a></li>
+        </ul>
+      </nav>
+      <div class="actions">
+        <a class="bell" href="notifications.html" data-protected aria-label="الإشعارات"><span aria-hidden="true">🔔</span></a>
+        <a class="btn btn--sm" href="login.html">تسجيل الدخول</a>
+        <a class="btn btn--sm" href="register.html">إنشاء حساب</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="page-main">
+    <!-- 2. HERO -->
+    <section class="hero hero--gallery container" aria-labelledby="hero-title">
+      <div class="hero__media">
+        <img src="assets/gallery-hero.svg" width="800" height="700" alt="حامل لوحات عليه لوحة منظر طبيعي بجانب لوحة ألوان وفرشاة">
+      </div>
+      <div class="hero__content">
+        <h1 id="hero-title">كل رسمة ليها حكاية، وكل فنان ليه بصمة.</h1>
+        <p>اكتشف إبداعات فنية من عوالم مختلفة، واستمتع بمواهب الفنانين، وخلي عينك تكتشف فنون وأفكار جديدة كل يوم.</p>
+        <div class="hero__buttons">
+          <a class="btn" href="#gallery">اكتشف رسومات</a>
+          <button class="btn" type="button" id="open-upload" aria-haspopup="dialog">اعرض رسمتك</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SEARCH AND FILTER -->
+    <section class="search container" id="gallery" aria-label="البحث والتصفية">
+      <div class="toolbar">
+        <div class="search__field">
+          <svg class="search__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input class="control search__input" type="search" id="search-input" placeholder="ابحث عن رسمة..." aria-label="ابحث عن رسمة" autocomplete="off">
+        </div>
+        <div class="select-wrap">
+          <select class="control" id="category-filter" aria-label="تصفية حسب نوع الرسمة"></select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. GALLERY GRID + 6. NO RESULTS -->
+    <section class="gallery container" aria-label="معرض الرسومات">
+      <div class="gallery-grid" id="gallery-grid"></div>
+      <div class="empty" id="no-results" role="status" aria-live="polite" hidden>
+        <svg viewBox="0 0 64 64" width="72" height="72" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="38" height="32" rx="4"/><path d="M8 34l10-10 8 8 6-6 14 14"/><circle cx="36" cy="20" r="3"/><circle cx="44" cy="44" r="9" fill="var(--bg)"/><path d="M51 51l7 7"/></svg>
+        <p>لا توجد نتيجة للبحث</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 5. UPLOAD MODAL (hidden on load) -->
+  <div class="modal" id="upload-modal" hidden>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <div class="modal__head">
+        <h2 id="modal-title">اعرض رسمتك</h2>
+        <button class="modal__close" type="button" id="close-upload" aria-label="إغلاق"><span aria-hidden="true">×</span></button>
+      </div>
+
+      <form id="upload-form" novalidate>
+        <div class="field">
+          <span class="field__label" id="image-label">صورة الرسمة</span>
+          <label class="upload" id="upload-area" for="art-image">
+            <span class="upload__empty">
+              <svg viewBox="0 0 48 48" width="48" height="48" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="36" height="32" rx="5"/><circle cx="17" cy="19" r="3"/><path d="M6 34l10-9 8 7 7-6 11 10"/></svg>
+              <strong>اضغط لاختيار صورة الرسمة</strong>
+              <small>JPG أو PNG أو WEBP أو GIF — حتى 5 ميجابايت</small>
+            </span>
+            <img class="upload__preview" id="image-preview" alt="معاينة الرسمة المختارة">
+            <input class="sr-only" type="file" id="art-image" name="image" accept="image/jpeg,image/png,image/webp,image/gif" required aria-describedby="err-image">
+          </label>
+          <p class="field__error" id="err-image"></p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="art-title">اسم الرسمة</label>
+          <input class="control" type="text" id="art-title" name="title" maxlength="60" placeholder="مثال: غروب على البحر" required aria-describedby="err-title">
+          <p class="field__error" id="err-title"></p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="art-category">نوع الرسمة</label>
+          <div class="select-wrap"><select class="control" id="art-category" name="category" required aria-describedby="err-category"></select></div>
+          <p class="field__error" id="err-category"></p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="art-description">وصف الرسمة</label>
+          <textarea class="control control--area" id="art-description" name="description" rows="4" maxlength="200" placeholder="اكتب وصفًا مختصرًا يوضح فكرة رسمتك" required aria-describedby="err-description"></textarea>
+          <p class="field__error" id="err-description"></p>
+        </div>
+
+        <button class="btn btn--block" type="submit">اعرض رسمتك</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. FOOTER -->
+  <footer class="footer" id="page-footer">
+    <p>© جميع الحقوق محفوظة لـ بصمة Basma</p>
+    <p class="footer__credit" lang="en" dir="ltr">Developed by DevRivo</p>
+  </footer>
+
+</body>
+</html>
