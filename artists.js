@@ -1,0 +1,8 @@
+'use strict';renderChrome();if(gate()){
+const q=$('#q'),isFriend=id=>S.friends.includes(id),isSent=id=>S.sent.includes(id);
+const badge=n=>n?`<span class="unread-badge">${n>99?'99+':n}</span>`:'';
+function person(a){return `<article class="card person" data-id="${a.id}"><button class="avatar-wrap" data-open="${a.id}">${img(a.avatar,a.name,'round')}${badge(S.unreadDM[a.id]||0)}</button><h3><button class="profile-link name-link" data-open="${a.id}">${esc(a.name)}</button></h3>${isFriend(a.id)?'<button class="chat-link" data-chat>محادثة معه</button>':`<button class="btn add" ${isSent(a.id)?'disabled':''}>${isSent(a.id)?'تم إرسال الطلب':'أضف صديق'}</button>`}</article>`}
+function render(){const t=q.value.trim().toLowerCase(),match=a=>!t||a.name.toLowerCase().includes(t),fr=ARTISTS.filter(a=>isFriend(a.id)&&match(a)),ds=ARTISTS.filter(a=>!isFriend(a.id)&&match(a));$('#friends').innerHTML=fr.map(person).join('');$('#disc').innerHTML=ds.map(person).join('');$('#friendsSec').hidden=!fr.length;$('#discover').hidden=!ds.length;$('#none').hidden=fr.length+ds.length>0}
+function sendRequest(id){if(isSent(id)||isFriend(id))return;S.sent.push(id);S.friendRequests.push({id:'fr'+Date.now(),from:'me',to:id,status:'pending'});save();render();toast('تم إرسال طلب الصداقة')}
+function openArtistChat(a){openChat({key:'dm:'+a.id,name:a.name,avatar:a.avatar,sub:'محادثة خاصة',seed:CHAT_SEED[a.id]||[]})}
+document.addEventListener('click',e=>{const card=e.target.closest('.person');if(!card)return;const a=ARTISTS.find(x=>x.id===card.dataset.id);if(e.target.closest('[data-chat]'))openArtistChat(a);else if(e.target.closest('.add'))sendRequest(a.id);else if(e.target.closest('[data-open]')||!e.target.closest('button'))openArtistProfile(a.id)});q.oninput=render;render();}
