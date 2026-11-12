@@ -1,0 +1,235 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+enum CommunityRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+enum JoinRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+enum MessageType {
+  TEXT
+  IMAGE
+}
+enum NotificationType {
+  PRIVATE_MESSAGE
+  COMMUNITY_MESSAGE
+  FRIEND_REQUEST
+  FRIEND_REQUEST_ACCEPTED
+  COMMUNITY_JOIN_REQUEST
+  COMMUNITY_JOIN_ACCEPTED
+  COMMUNITY_JOIN_REJECTED
+  ARTWORK_LIKE
+  ARTWORK_COMMENT
+  SYSTEM_ANNOUNCEMENT
+}
+
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  username String @unique
+  passwordHash String
+  bio String? @db.VarChar(500)
+  avatarUrl String?
+  coverUrl String?
+  isEmailVerified Boolean @default(false)
+  refreshTokenHash String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  artworks Artwork[]
+  likes ArtworkLike[]
+  comments ArtworkComment[]
+  sentFriendRequests Friendship[] @relation("FriendRequester")
+  receivedFriendRequests Friendship[] @relation("FriendAddressee")
+  following Follow[] @relation("Follower")
+  followers Follow[] @relation("Following")
+  ownedCommunities Community[]
+  communityMemberships CommunityMember[]
+  joinRequests JoinRequest[]
+  sentMessages Message[]
+  conversationMemberships ConversationParticipant[]
+  notifications Notification[]
+  actedNotifications Notification[] @relation("NotificationActor")
+  passwordResetTokens PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+  @@index([username])
+  @@index([createdAt])
+}
+
+model Artwork {
+  id String @id @default(cuid())
+  userId String
+  title String @db.VarChar(120)
+  description String? @db.VarChar(2000)
+  category String @db.VarChar(80)
+  imageUrl String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes ArtworkLike[]
+  comments ArtworkComment[]
+  @@index([category, createdAt])
+  @@index([userId, createdAt])
+}
+model ArtworkLike {
+  id String @id @default(cuid())
+  artworkId String
+  userId String
+  createdAt DateTime @default(now())
+  artwork Artwork @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([artworkId, userId])
+}
+model ArtworkComment {
+  id String @id @default(cuid())
+  artworkId String
+  userId String
+  content String @db.VarChar(1000)
+  createdAt DateTime @default(now())
+  artwork Artwork @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([artworkId, createdAt])
+}
+model Friendship {
+  id String @id @default(cuid())
+  requesterId String
+  addresseeId String
+  status FriendshipStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  requester User @relation("FriendRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("FriendAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId, status])
+}
+model Follow {
+  id String @id @default(cuid())
+  followerId String
+  followingId String
+  createdAt DateTime @default(now())
+  follower User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+  @@unique([followerId, followingId])
+}
+model Community {
+  id String @id @default(cuid())
+  ownerId String
+  name String @db.VarChar(100)
+  description String? @db.VarChar(1000)
+  category String @db.VarChar(80)
+  coverUrl String?
+  isPrivate Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  members CommunityMember[]
+  joinRequests JoinRequest[]
+  messages Message[]
+  @@index([category, createdAt])
+}
+model CommunityMember {
+  id String @id @default(cuid())
+  communityId String
+  userId String
+  role CommunityRole @default(MEMBER)
+  joinedAt DateTime @default(now())
+  lastReadAt DateTime?
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([communityId, userId])
+}
+model JoinRequest {
+  id String @id @default(cuid())
+  communityId String
+  userId String
+  status JoinRequestStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([communityId, userId])
+  @@index([communityId, status])
+}
+model Conversation {
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  participants ConversationParticipant[]
+  messages Message[]
+}
+model ConversationParticipant {
+  id String @id @default(cuid())
+  conversationId String
+  userId String
+  lastReadAt DateTime?
+  joinedAt DateTime @default(now())
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([conversationId, userId])
+}
+model Message {
+  id String @id @default(cuid())
+  senderId String
+  conversationId String?
+  communityId String?
+  type MessageType @default(TEXT)
+  content String? @db.VarChar(5000)
+  imageUrl String?
+  createdAt DateTime @default(now())
+  sender User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  conversation Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  community Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  @@index([conversationId, createdAt])
+  @@index([communityId, createdAt])
+}
+model Notification {
+  id String @id @default(cuid())
+  userId String
+  actorId String?
+  type NotificationType
+  title String @db.VarChar(180)
+  body String? @db.VarChar(500)
+  data Json?
+  isRead Boolean @default(false)
+  isDeletable Boolean @default(true)
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  actor User? @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
+  @@index([userId, isRead, createdAt])
+}
+
+model PasswordResetToken {
+  id String @id @default(cuid())
+  userId String
+  tokenHash String @unique
+  expiresAt DateTime
+  usedAt DateTime?
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, expiresAt])
+}
+
+model EmailVerificationToken {
+  id String @id @default(cuid())
+  userId String
+  tokenHash String @unique
+  expiresAt DateTime
+  usedAt DateTime?
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, expiresAt])
+}
