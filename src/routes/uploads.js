@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import multer from 'multer';
+import { authenticate } from '../middleware/auth.js';
+import { uploadImage } from '../services/cloudinary.js';
+import { AppError, ok, asyncHandler } from '../utils/http.js';
+const router = Router();
+const max = (Number(process.env.MAX_UPLOAD_MB) || 8) * 1024 * 1024;
+const upload = multer({ dest: 'tmp_uploads/', limits: { fileSize: max, files: 1 }, fileFilter: (_req, file, cb) => { if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.mimetype)) return cb(new AppError(415, 'نوع الصورة غير مدعوم')); cb(null, true); } });
+router.post('/image', authenticate, upload.single('image'), asyncHandler(async (req, res) => { if (!req.file) throw new AppError(400, 'اختر صورة أولًا'); const folder = String(req.body.folder || 'artworks'); if (!['avatars', 'covers', 'artworks', 'communities', 'messages'].includes(folder)) throw new AppError(400, 'مجلد الرفع غير صالح'); try { const result = await uploadImage(req.file, `basma/${folder}/${req.user.id}`); ok(res, result, 201); } finally { const fs = await import('node:fs/promises'); await fs.unlink(req.file.path).catch(() => {}); } }));
+export default router;
